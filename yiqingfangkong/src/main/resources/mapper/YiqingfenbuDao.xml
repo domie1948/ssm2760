@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.YiqingfenbuDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.yiqingfenbu_chengshi as yiqingfenbuChengshi
+        ,a.yiqingfenbu_shengshi as yiqingfenbuShengshi
+        ,a.yiqingfenbu_xinzheng as yiqingfenbuXinzheng
+        ,a.yiqingfenbu_wuzhengzhuang as yiqingfenbuWuzhengzhuang
+        ,a.yiqingfenbu_fengxina as yiqingfenbuFengxina
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.YiqingfenbuView" >
+        SELECT
+        <include refid="Base_Column_List" />
+
+--         级联表的字段
+
+        FROM yiqingfenbu  a
+
+        <where>
+            <if test=" params.yiqingfenbuChengshi != '' and params.yiqingfenbuChengshi != null and params.yiqingfenbuChengshi != 'null' ">
+                and a.yiqingfenbu_chengshi like CONCAT('%',#{params.yiqingfenbuChengshi},'%')
+            </if>
+            <if test=" params.yiqingfenbuShengshi != '' and params.yiqingfenbuShengshi != null and params.yiqingfenbuShengshi != 'null' ">
+                and a.yiqingfenbu_shengshi like CONCAT('%',#{params.yiqingfenbuShengshi},'%')
+            </if>
+            <if test="params.yiqingfenbuXinzhengStart != null">
+                <![CDATA[  and a.yiqingfenbu_xinzheng >= #{params.yiqingfenbuXinzhengStart}   ]]>
+            </if>
+            <if test="params.yiqingfenbuXinzhengEnd != null">
+                <![CDATA[  and a.yiqingfenbu_xinzheng <= #{params.yiqingfenbuXinzhengEnd}   ]]>
+            </if>
+            <if test="params.yiqingfenbuWuzhengzhuangStart != null">
+                <![CDATA[  and a.yiqingfenbu_wuzhengzhuang >= #{params.yiqingfenbuWuzhengzhuangStart}   ]]>
+            </if>
+            <if test="params.yiqingfenbuWuzhengzhuangEnd != null">
+                <![CDATA[  and a.yiqingfenbu_wuzhengzhuang <= #{params.yiqingfenbuWuzhengzhuangEnd}   ]]>
+            </if>
+            <if test="params.yiqingfenbuFengxinaStart != null">
+                <![CDATA[  and a.yiqingfenbu_fengxina >= #{params.yiqingfenbuFengxinaStart}   ]]>
+            </if>
+            <if test="params.yiqingfenbuFengxinaEnd != null">
+                <![CDATA[  and a.yiqingfenbu_fengxina <= #{params.yiqingfenbuFengxinaEnd}   ]]>
+            </if>
+
+        </where>
+        order by a.${params.orderBy} desc
+    </select>
+
+</mapper>

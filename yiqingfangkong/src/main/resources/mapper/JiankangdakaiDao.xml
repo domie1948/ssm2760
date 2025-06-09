@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dao.JiankangdakaiDao">
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        a.id as id
+        ,a.jiankangdakai_name as jiankangdakaiName
+        ,a.sex_types as sexTypes
+        ,a.jiankangdakai_tiwen as jiankangdakaiTiwen
+        ,a.keshou_types as keshouTypes
+        ,a.wuaichu_types as wuaichuTypes
+        ,a.jiankangdakai_didian as jiankangdakaiDidian
+        ,a.binghuan_types as binghuanTypes
+        ,a.gaofengxian_types as gaofengxianTypes
+        ,a.jiankangdakai_photo as jiankangdakaiPhoto
+        ,a.yanzheng as yanzheng
+        ,a.create_time as createTime
+    </sql>
+    <select id="selectListView" parameterType="map" resultType="com.entity.view.JiankangdakaiView" >
+        SELECT
+        <include refid="Base_Column_List" />
+
+--         级联表的字段
+
+        FROM jiankangdakai  a
+
+        <where>
+            <if test=" params.jiankangdakaiName != '' and params.jiankangdakaiName != null and params.jiankangdakaiName != 'null' ">
+                and a.jiankangdakai_name like CONCAT('%',#{params.jiankangdakaiName},'%')
+            </if>
+            <if test="params.sexTypes != null">
+                and a.sex_types = #{params.sexTypes}
+            </if>
+            <if test=" params.jiankangdakaiTiwen != '' and params.jiankangdakaiTiwen != null and params.jiankangdakaiTiwen != 'null' ">
+                and a.jiankangdakai_tiwen like CONCAT('%',#{params.jiankangdakaiTiwen},'%')
+            </if>
+            <if test="params.keshouTypes != null">
+                and a.keshou_types = #{params.keshouTypes}
+            </if>
+            <if test="params.wuaichuTypes != null">
+                and a.wuaichu_types = #{params.wuaichuTypes}
+            </if>
+            <if test=" params.jiankangdakaiDidian != '' and params.jiankangdakaiDidian != null and params.jiankangdakaiDidian != 'null' ">
+                and a.jiankangdakai_didian like CONCAT('%',#{params.jiankangdakaiDidian},'%')
+            </if>
+            <if test="params.binghuanTypes != null">
+                and a.binghuan_types = #{params.binghuanTypes}
+            </if>
+            <if test="params.gaofengxianTypes != null">
+                and a.gaofengxian_types = #{params.gaofengxianTypes}
+            </if>
+
+        </where>
+        order by a.${params.orderBy} desc
+    </select>
+
+</mapper>
